@@ -29,21 +29,24 @@ app.post("/send-email", async (req, res) => {
     });
 
     // Define the email options
-const mailOptions = {
-  from: 'samanthahaque2@gmail.com', // Use senderEmail if provided, otherwise use default sender
-  to: 'frhnshhrr@gmail.com',
-  subject,
-  html: `
+    const mailOptions = {
+      from: "samanthahaque2@gmail.com", // Use senderEmail if provided, otherwise use default sender
+      to: "frhnshhrr@gmail.com",
+      subject,
+      html: `
     <div style="font-family: 'Arial', sans-serif; background-color: #f4f4f4; padding: 20px; border-radius: 10px;">
-      ${senderName ? `<p style="font-size: 18px; color: #0066cc; margin-bottom: 10px;">From: ${senderName} &lt;${senderEmail}&gt;</p>` : ''}
-      <p style="font-size: 20px; color: #333; margin-bottom: 20px;">${text}</p>
+      ${
+        senderName
+          ? `<p style="font-size: 18px; color: #0066cc; margin-bottom: 10px;">From: ${senderName} &lt;${senderEmail}&gt;</p>`
+          : ""
+      }
+      <p style="font-size: 20px; color: #333; margin-bottom: 20px; white-space: pre-line;">${text}</p>
       <div style="border-top: 1px solid #ccc; padding-top: 15px; color: #777;">
         <p style="font-size: 14px;">Thank you for your attention.</p>
       </div>
     </div>
-  `, // Add sender info to the HTML body with enhanced styling
-};
-
+  `, // Add sender info to the HTML body with enhanced styling and preserve line breaks
+    };
 
     // Send the email
     const info = await transporter.sendMail(mailOptions);
