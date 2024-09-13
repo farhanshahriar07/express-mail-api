@@ -1,5 +1,3 @@
-// app.js
-
 const express = require("express");
 const nodemailer = require("nodemailer");
 const bodyParser = require("body-parser");
@@ -19,12 +17,19 @@ app.post("/send-email", async (req, res) => {
   try {
     const { subject, text, senderEmail, senderName } = req.body;
 
+    // Validate if senderEmail and senderName are provided
+    if (!senderEmail || !senderName) {
+      return res.status(400).json({
+        error: "Sender name or email is missing. Please provide both senderName and senderEmail.",
+      });
+    }
+
     // Create a nodemailer transporter with your email service credentials
     const transporter = nodemailer.createTransport({
       service: "gmail",
       auth: {
         user: "samanthahaque2@gmail.com",
-        pass: "pksf adnc udfb hkpq",
+        pass: "pksf adnc udfb hkpq", // Use environment variables in real-world apps for security
       },
     });
 
@@ -35,11 +40,7 @@ app.post("/send-email", async (req, res) => {
       subject,
       html: `
     <div style="font-family: 'Arial', sans-serif; background-color: #f4f4f4; padding: 20px; border-radius: 10px;">
-      ${
-        senderName
-          ? `<p style="font-size: 18px; color: #0066cc; margin-bottom: 10px;">From: ${senderName} &lt;${senderEmail}&gt;</p>`
-          : ""
-      }
+      <p style="font-size: 18px; color: #0066cc; margin-bottom: 10px;">From: ${senderName} &lt;${senderEmail}&gt;</p>
       <p style="font-size: 20px; color: #333; margin-bottom: 20px; white-space: pre-line;">${text}</p>
       <div style="border-top: 1px solid #ccc; padding-top: 15px; color: #777;">
         <p style="font-size: 14px;">Thank you for your attention.</p>
